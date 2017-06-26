@@ -8,6 +8,10 @@ from nltk.parse.stanford import StanfordParser
 from nltk.parse.stanford import StanfordDependencyParser
 from nltk.tokenize import sent_tokenize, word_tokenize
 import networkx as nx
+import matplotlib.pyplot as plt
+from nltk.stem import WordNetLemmatizer
+from nltk.corpus import stopwords
+
 
 nlp = spacy.load('en')
 
