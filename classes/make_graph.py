@@ -13,8 +13,14 @@ class Make_graph(graph.Graph):
 			super(Make_graph,self).add_nod(list_nodes[i])
 		super(Make_graph,self).display_graph()
 
-
 	def add_edges(self,list_nodes,dep):
+		'''Adds edges between adges
+		searches in list of nodes and if there is a dependency add a node
+		
+		Arguments:
+			list_nodes {[list]} -- [list of nodes]
+			dep {[object]} -- [spacy parser result]
+		'''
 		lemmatizer = WordNetLemmatizer()
 		for word in dep:
 			print(word.text, word.pos_, word.dep_, word.head.text)
@@ -26,3 +32,8 @@ class Make_graph(graph.Graph):
 				print(word.text,word.head.text)
 				super(Make_graph,self).add_edge(a,b)
 		super(Make_graph,self).display_graph()
+
+	def name_nodes(self,node_list,dep_parse):
+		for word in dep_parse:
+			if(word.dep_=="nummod"):
+				print(word.text,word.head.text)

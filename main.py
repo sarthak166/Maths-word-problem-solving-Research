@@ -1,7 +1,6 @@
 from classes.graph import Graph
 from classes.parsers import Parser
-from classes.extract import Extract
-from classes.make_graph import Make_graph
+from classes.extract import Extract_direct
 
 import classes
 '''
@@ -36,18 +35,13 @@ def final_list(initlist):
 if __name__=="__main__":
 	question1="There are 6 students in the class and 18 candies. If candies are divided equally among students, how many does each student get?"
 	question="There are 43 rulers in the drawrer. Benny took 27 rulers from the drawrer. How many rulers are now in the drawrer?"
-	a=Extract(question)
-	dep=a.dependency_parsing()
-	a.pos_tag()
-	#print(a.noun_dependents(dep))
-	#a.stanford_dep_par()
-	poslist=a.node_pos(dep)
-	g=Make_graph()
-	g.add_nodes(poslist)
-	g.add_edges(poslist,dep)
-	word=a.question_process(dep,poslist)
-	g.add_nod("question")
-	print(word)
-	g.display_graph()
-	g.add_edge("question",word)
-	g.display_graph()
+	question2="Gwen was organizing her book case making sure each of the shelves had exactly 9 books on it. She has 2 types of books - mystery books and picture books. If she had 3shelves of mystery books and 5 shelves of picture books,how many books did she have total?"
+	final_q=question
+	parse=Parser(final_q)
+	dep=parse.dependency_parsing()
+	parse.pos_tag()
+	g=Extract_direct(final_q,dep)
+	g.node()
+	g.add_edges()
+	g.draw()
+	print("running")

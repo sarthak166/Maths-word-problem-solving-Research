@@ -11,7 +11,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
-
+import matplotlib.pyplot as plt
 
 nlp = spacy.load('en')
 
