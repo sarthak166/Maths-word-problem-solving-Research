@@ -14,7 +14,8 @@ from nltk.corpus import stopwords
 import matplotlib.pyplot as plt
 
 nlp = spacy.load('en')
-
+lemmatizer = WordNetLemmatizer()
+stop = set(stopwords.words('english'))
 jar = '/home/puru/Documents/d/arithmetic/code/api/libs/stanford-postagger-2016-10-31/stanford-postagger.jar'
 model = '/home/puru/Documents/d/arithmetic/code/api/libs/stanford-postagger-2016-10-31/models/english-left3words-distsim.tagger'
 pos_tagger = StanfordPOSTagger(model, jar, encoding='utf8')

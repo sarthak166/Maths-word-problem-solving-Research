@@ -11,13 +11,13 @@ class Parser():
 		'''
 		self.question=question
 
-	def dependency_parsing(self):
+	def dependency_parsing(self,q1):
 		'''Dependensy parsing using spacy
 		
 		Returns:
 			parsing result
 		'''
-		doc=nlp(self.question)
+		doc=nlp(q1)
 		return doc
 
 	def stanford_dep_par(self):
@@ -38,3 +38,6 @@ class Parser():
 		doc=nlp(self.question)
 		for word in doc:
 			print(word.text,word.tag_)
+
+	#def co_ref(self):
+		
