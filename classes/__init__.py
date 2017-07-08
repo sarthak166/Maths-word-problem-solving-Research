@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import spacy
 import numpy as np
 import pandas as pd

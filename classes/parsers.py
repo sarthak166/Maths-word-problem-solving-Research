@@ -27,8 +27,9 @@ class Parser():
 		for i in sent_tokenize(self.question):
 			result = dependency_parser.raw_parse(i)
 			dep = result.__next__()
-			for triple in dep.triples():
-				print(triple)
+			#for triple in dep.triples():
+				#print(triple)
+				
 
 	def pos_tag(self):
 		'''
@@ -36,8 +37,8 @@ class Parser():
 	
 		'''
 		doc=nlp(self.question)
-		for word in doc:
-			print(word.text,word.tag_)
+		#for word in doc:
+			#print(word.text,word.tag_)
 
 	#def co_ref(self):
 		

@@ -24,12 +24,12 @@ class Graph(object):
     	self.G.node(node, attr_name=attr_type)
 
     def add_node_attr(self,node,attr_name,attr_type):
-    	if(attr_name=="Head"):
-    		self.G.add_node(node, Head=attr_type)
+    	if(attr_name=="name"):
+    		self.G.add_node(node, name=attr_type)
 
     def att_edge(self,head,node,att_name,att_value):
     	if(att_name=="Relation"):
-    		self.G.add_edge(head, node, Relation=att_value )
+    		self.G.	add_edge(head, node, Relation=att_value )
 
     def return_node_head(self,node_name):
     	return self.G.node[node_name]["Head"]
@@ -40,3 +40,25 @@ class Graph(object):
     	plt.draw()
     	plt.show()
     	
+    def draw_node_name(self):
+    	pos = nx.spring_layout(self.G)
+    	nx.draw_networkx(self.G,with_labels=True)
+    	name=nx.get_node_attributes(self.G,'name')
+    	for i in self.G.nodes_iter(data=False):
+    		x,y=pos[i]
+    		if i in name:    			
+    			print("Printing name"+str(name[i]))
+    			s=name[i]
+    			plt.text(x,y+0.01,s, bbox=dict(facecolor='red', alpha=0.5),horizontalalignment='center') 	
+    		else:
+    			pass
+    	#no=self.G.nodes()
+    	#color=nx.get_node_attributes(self.G,'name')
+    	#for i in range(len(no)):
+    	#	x,y=self.G.node["name"][i]
+    	#	plt.text(x,y+0.1,s='Node word', bbox=dict(facecolor='red', alpha=0.5),horizontalalignment='center') 
+    	#nx.draw_networkx_edges(self.G, pos)
+    	#node_labels=nx.get_node_attributes(self.G,'name')
+    	#print(node_labels)
+    	#nx.draw_networkx_nodes(self.G,pos,node_labels)
+    	plt.show()

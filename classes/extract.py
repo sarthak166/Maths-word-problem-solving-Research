@@ -11,21 +11,23 @@ class Extract_direct(graph.Graph,parsers.Parser):
 		self.node_list=[]
 		super(Extract_direct, self).__init__()
 		self.quantity=0
-		self.dic={}
+		self.word_dic={}
+		self.li=[]
+		self.numeric_li=[]
 
-	def distingush_numeric(self):
+	def distingush_word(self):
 		ques=self.question
 		for word in self.parse:
 			if(word.dep_=="nummod"):
 				qword=word.head.text
 				cword=lemmatizer.lemmatize(word.head.text)
 				try:
-					match = next(val for key, val in self.dic.items() if cword in key)
-					self.dic[cword]=self.dic[cword]+1
-					print(self.dic[cword])
+					match = next(val for key, val in self.word_dic.items() if cword in key)
+					self.word_dic[cword]=self.word_dic[cword]+1
+					#print(self.word_dic[cword])
 				except StopIteration:
-					self.dic[cword]=1
-				fword=cword+str(self.dic[cword])
+					self.word_dic[cword]=1
+				fword=cword+str(self.word_dic[cword])
 				print(fword)
 				qword=qword+' '
 				fword=fword+' '
@@ -40,21 +42,21 @@ class Extract_direct(graph.Graph,parsers.Parser):
 		'''Adds nodes and specifies its head
 		'''
 		for word in self.parse:
-			#print(word.text,word.head.text,word.dep_,word.pos_)
+			print(word.text,word.head.text,word.dep_,word.pos_)
 			if word.pos_=="NUM" or word.pos_=="NOUN" or word.pos_=="PROPN"or word.pos_=="VERB":
 				if word.dep_=="nummod":
-					self.quantity=self.quantity+1
-					cword=lemmatizer.lemmatize(word.head.text)
+					#self.quantity=self.quantity+1
+					cword=word.head.text
+					#cword=lemmatizer.lemmatize(word.head.text)
 					#if cword not in self.node_list:
 					#	self.node_list.append(cword)
-					cword1=cword+str(self.quantity)
-					self.add_numeric(word.text,cword1)
+					#cword1=cword+str(self.quantity)
+					self.add_numeric(word.text,cword)
 				elif word.text not in stop and word.text not in self.node_list:	
 					w=lemmatizer.lemmatize(word.text)
 					self.node_attr(w,word.pos_)
 
 	def node_attr(self,word,word_pos):
-		#print(word)
 		'''add head attribute of the node
 		
 		Arguments:
@@ -97,9 +99,9 @@ class Extract_direct(graph.Graph,parsers.Parser):
 			a=lemmatizer.lemmatize(word.text)
 			b=lemmatizer.lemmatize(word.head.text)
 			if (a in self.node_list and b in self.node_list):
-				if(self.check_connectivity(a,b)):
+				self.add_egde_attr(a,b,word.dep_)
+				#if(self.check_connectivity(a,b)):
 					#print(word.text,word.head.text)
-					self.add_egde_attr(a,b,word.dep_)
 		
 	def add_egde_attr(self,word,head,dep):
 		#if(dep=="nummod"):
@@ -123,3 +125,59 @@ class Extract_direct(graph.Graph,parsers.Parser):
 	def sen_tok(self):
 		sent_tokenize_list = sent_tokenize(self.question)
 		return sent_tokenize_list
+
+	def numeric_dep(self):
+		for word in self.parse:
+			print(word.head.text,word.text,word.dep_)
+			if(word.pos_=="NUM"):
+				self.li.append(word)
+				#print("Printing numeric relations")
+				for child in word.children:
+					self.add_name_node(child)
+					super(Extract_direct,self).add_edge(self.position(str(word.text)),self.position(str(child)))	
+					self.li.append(child)
+					self.recurse(child)
+				for ans in word.ancestors:
+					self.add_name_node(ans)
+					super(Extract_direct,self).add_edge(self.position(str(word.text)),self.position(str(ans)))	
+					self.li.append(ans)
+					self.recurse(ans)
+
+	
+	def recurse(self,ite_word):
+		#print("main word"+str(ite_word))
+		for word in self.parse:
+			if (str(word.text) == str(ite_word)):
+				for child in word.children:
+					#print("Children is"+ str(child),str(self.li))
+					if child not in self.li and (child.pos_=="NOUN" or child.pos_=="PROPN" or child.pos_=="VERB" or child.pos_=="PRON"):
+						self.add_name_node(child)
+						self.add_name_node(word.text)
+						#print("into childer")
+						super(Extract_direct,self).add_edge(self.position(str(word.text)),self.position(str(child)))	
+						self.li.append(child)				
+						self.recurse(child)
+					elif child not in self.li:
+						self.li.append(child)				
+						self.recurse(child)
+				for ans in word.ancestors:
+					#print("Anscester is"+str(ans))
+					if ans not in self.li and (ans.pos_=="NOUN" or ans.pos_=="PROPN" or ans.pos_=="VERB" or ans.pos_=="PRON"):
+						#print("goes into"+str(ans))
+						self.add_name_node(ans)
+						self.add_name_node(word.text)
+						super(Extract_direct,self).add_edge(self.position(str(word.text)),self.position(str(ans)))	
+						self.li.append(ans)
+						self.recurse(ans)
+					elif ans not in self.li:
+						self.li.append(self.position(str(ans)))				
+						self.recurse(ans)
+
+	def position(self,child):
+		y=self.question.find(str(child))
+		print(str(child) +' '+str(y))
+		return y
+
+	def add_name_node(self,child):
+		a=self.position(child)
+		super(Extract_direct,self).add_node_attr(a,"name",child)
