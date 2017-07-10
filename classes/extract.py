@@ -42,7 +42,7 @@ class Extract_direct(graph.Graph,parsers.Parser):
 		'''Adds nodes and specifies its head
 		'''
 		for word in self.parse:
-			print(word.text,word.head.text,word.dep_,word.pos_)
+			#print(word.text,word.head.text,word.dep_,word.pos_)
 			if word.pos_=="NUM" or word.pos_=="NOUN" or word.pos_=="PROPN"or word.pos_=="VERB":
 				if word.dep_=="nummod":
 					#self.quantity=self.quantity+1
@@ -128,56 +128,75 @@ class Extract_direct(graph.Graph,parsers.Parser):
 
 	def numeric_dep(self):
 		for word in self.parse:
-			print(word.head.text,word.text,word.dep_)
+			#print(word.head.text,word.text,word.dep_)
 			if(word.pos_=="NUM"):
 				self.li.append(word)
 				#print("Printing numeric relations")
 				for child in word.children:
-					self.add_name_node(child)
-					super(Extract_direct,self).add_edge(self.position(str(word.text)),self.position(str(child)))	
-					self.li.append(child)
-					self.recurse(child)
+					if self.check_pos(child) and self.remove_stopwords(child):
+						self.add_name_node(child)
+						self.add_name_node(word)
+						super(Extract_direct,self).add_edge(self.position(str(word.text)),self.position(str(child)))	
+						self.li.append(child)
+						self.recurse(child)
 				for ans in word.ancestors:
-					self.add_name_node(ans)
-					super(Extract_direct,self).add_edge(self.position(str(word.text)),self.position(str(ans)))	
-					self.li.append(ans)
-					self.recurse(ans)
+					if self.check_pos(ans) and self.remove_stopwords(ans):
+						self.add_name_node(ans)
+						self.add_name_node(word)
+						super(Extract_direct,self).add_edge(self.position(str(word.text)),self.position(str(ans)))	
+						self.li.append(ans)
+						self.recurse(ans)
 
 	
 	def recurse(self,ite_word):
 		#print("main word"+str(ite_word))
+		#print("Printing nodes"+str(self.numeric_li))	
 		for word in self.parse:
 			if (str(word.text) == str(ite_word)):
 				for child in word.children:
-					#print("Children is"+ str(child),str(self.li))
-					if child not in self.li and (child.pos_=="NOUN" or child.pos_=="PROPN" or child.pos_=="VERB" or child.pos_=="PRON"):
+					#print("Children is "+ str(child),str(self.li))
+					if child not in self.li and self.check_pos(child) and self.remove_stopwords(child):
 						self.add_name_node(child)
-						self.add_name_node(word.text)
-						#print("into childer")
-						super(Extract_direct,self).add_edge(self.position(str(word.text)),self.position(str(child)))	
+						if self.check_pos(word) and self.remove_stopwords(word):
+							self.add_name_node(word)
+							super(Extract_direct,self).add_edge(self.position(str(word.text)),self.position(str(child)))	
 						self.li.append(child)				
 						self.recurse(child)
 					elif child not in self.li:
 						self.li.append(child)				
 						self.recurse(child)
 				for ans in word.ancestors:
-					#print("Anscester is"+str(ans))
-					if ans not in self.li and (ans.pos_=="NOUN" or ans.pos_=="PROPN" or ans.pos_=="VERB" or ans.pos_=="PRON"):
+					#print("Anscester is "+str(ans),str(self.li))
+					if ans not in self.li and self.check_pos(ans) and self.remove_stopwords(ans):
 						#print("goes into"+str(ans))
 						self.add_name_node(ans)
-						self.add_name_node(word.text)
-						super(Extract_direct,self).add_edge(self.position(str(word.text)),self.position(str(ans)))	
+						if self.check_pos(word) and self.remove_stopwords(word):
+							self.add_name_node(word)
+							super(Extract_direct,self).add_edge(self.position(str(word.text)),self.position(str(ans)))	
 						self.li.append(ans)
 						self.recurse(ans)
 					elif ans not in self.li:
-						self.li.append(self.position(str(ans)))				
+						self.li.append(ans)				
 						self.recurse(ans)
 
 	def position(self,child):
 		y=self.question.find(str(child))
-		print(str(child) +' '+str(y))
+		#print(str(child) +' '+str(y))
 		return y
 
 	def add_name_node(self,child):
 		a=self.position(child)
+		self.numeric_li.append(child)
 		super(Extract_direct,self).add_node_attr(a,"name",child)
+
+	def check_pos(self,ans):
+		if (ans.pos_=="NOUN" or ans.pos_=="PROPN" or ans.pos_=="VERB" ):
+			return True
+		else:
+			return False
+
+	def remove_stopwords(self,word):
+		if word.text.lower() not in stop:
+			return True
+		else:
+			return False

@@ -18,6 +18,7 @@ class Graph(object):
         print(self.G.nodes(data=True))
 
     def add_edge(self,node1,node2):
+    	print(self.G.node[node1]['name'],self.G.node[node2]['name'])
     	self.G.add_edge(node1,node2)
 
     def add_att(self,node,attr_name,attr_type):
@@ -43,15 +44,32 @@ class Graph(object):
     def draw_node_name(self):
     	pos = nx.spring_layout(self.G)
     	nx.draw_networkx(self.G,with_labels=True)
-    	name=nx.get_node_attributes(self.G,'name')
-    	for i in self.G.nodes_iter(data=False):
-    		x,y=pos[i]
-    		if i in name:    			
-    			print("Printing name"+str(name[i]))
-    			s=name[i]
-    			plt.text(x,y+0.01,s, bbox=dict(facecolor='red', alpha=0.5),horizontalalignment='center') 	
-    		else:
-    			pass
+    	for n,d in self.G.nodes_iter(data=True):
+    		print(n,d)
+    		x,y=pos[n]
+    		print(x,y)
+    		plt.text(x,y,d, bbox=dict(facecolor='red', alpha=0.1),horizontalalignment='center')
+    		 	
+
+    	#for i in range(pos):
+    	#	for n,d in self.G.nodes_iter(data=True):
+    	#		if (n==i):
+
+
+
+
+
+
+
+    	#name=nx.get_node_attributes(self.G,'name')
+    	#for i in self.G.nodes_iter(data=True):
+    	#	x,y=pos[i]
+    	#	if i in name:    			
+    	#		print("Printing name"+str(name[i]))
+    	#		s=name[i]
+    	#		plt.text(x,y,s, bbox=dict(facecolor='red', alpha=0.5),horizontalalignment='center') 	
+    	#	else:
+    	#		pass
     	#no=self.G.nodes()
     	#color=nx.get_node_attributes(self.G,'name')
     	#for i in range(len(no)):
