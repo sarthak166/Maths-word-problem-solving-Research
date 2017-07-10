@@ -41,14 +41,28 @@ class Graph(object):
     	plt.draw()
     	plt.show()
     	
-    def draw_node_name(self):
+    def draw_node_name(self,number):
     	pos = nx.spring_layout(self.G)
-    	nx.draw_networkx(self.G,with_labels=True)
-    	for n,d in self.G.nodes_iter(data=True):
-    		print(n,d)
-    		x,y=pos[n]
-    		print(x,y)
-    		plt.text(x,y,d, bbox=dict(facecolor='red', alpha=0.1),horizontalalignment='center')
+    	#nx.draw_networkx(self.G,with_labels=True)
+    	#for n,d in self.G.nodes_iter(data=True):
+    	#	print(n,d)
+    	#for node, position in pos.items():
+    	#	print("Printing pos "+str(node),str(position))
+    	#	for n,d in self.G.nodes_iter(data=True):
+    	#		if node == n:
+    	#			x,y=pos[node]
+    	#			print(x,y,d)
+    	#			plt.text(x,y,d, bbox=dict(facecolor='red', alpha=0.1),horizontalalignment='center')
+    		
+        	
+
+    	#print(pos['node'])
+    	#nx.draw_networkx(self.G,with_labels=True)
+    	#for n,d in self.G.nodes_iter(data=True):
+    	#	print(n,d)
+    	#	x,y=pos[n]
+    	#	print(x,y)
+    	#	plt.text(x,y,d, bbox=dict(facecolor='red', alpha=0.1),horizontalalignment='center')
     		 	
 
     	#for i in range(pos):
@@ -75,8 +89,11 @@ class Graph(object):
     	#for i in range(len(no)):
     	#	x,y=self.G.node["name"][i]
     	#	plt.text(x,y+0.1,s='Node word', bbox=dict(facecolor='red', alpha=0.5),horizontalalignment='center') 
-    	#nx.draw_networkx_edges(self.G, pos)
-    	#node_labels=nx.get_node_attributes(self.G,'name')
-    	#print(node_labels)
+    	nx.draw_networkx(self.G, pos)
+    	node_labels=nx.get_node_attributes(self.G,'name')
+    	print(node_labels)
+    	nx.draw_networkx_labels(self.G, pos, labels = node_labels)
     	#nx.draw_networkx_nodes(self.G,pos,node_labels)
+    	# kurs = "%i.png" % number
+    	# plt.savefig(kurs, format='png')
     	plt.show()

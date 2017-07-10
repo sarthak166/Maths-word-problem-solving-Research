@@ -128,56 +128,66 @@ class Extract_direct(graph.Graph,parsers.Parser):
 
 	def numeric_dep(self):
 		for word in self.parse:
-			#print(word.head.text,word.text,word.dep_)
+			print(word.head.text,word.text,word.dep_)
 			if(word.pos_=="NUM"):
-				self.li.append(word)
+				self.li.append(self.position(word))
 				#print("Printing numeric relations")
+				self.add_name_node(word)
 				for child in word.children:
 					if self.check_pos(child) and self.remove_stopwords(child):
 						self.add_name_node(child)
-						self.add_name_node(word)
 						super(Extract_direct,self).add_edge(self.position(str(word.text)),self.position(str(child)))	
-						self.li.append(child)
+						self.li.append(self.position(child))
+						self.recurse(child)
+					else:
+						self.li.append(self.position(child))
 						self.recurse(child)
 				for ans in word.ancestors:
 					if self.check_pos(ans) and self.remove_stopwords(ans):
 						self.add_name_node(ans)
-						self.add_name_node(word)
 						super(Extract_direct,self).add_edge(self.position(str(word.text)),self.position(str(ans)))	
-						self.li.append(ans)
+						self.li.append(self.position(ans))
 						self.recurse(ans)
-
+					else:
+						self.li.append(self.position(ans))
+						self.recurse(ans)
 	
 	def recurse(self,ite_word):
 		#print("main word"+str(ite_word))
 		#print("Printing nodes"+str(self.numeric_li))	
 		for word in self.parse:
 			if (str(word.text) == str(ite_word)):
+				flag=0
 				for child in word.children:
 					#print("Children is "+ str(child),str(self.li))
-					if child not in self.li and self.check_pos(child) and self.remove_stopwords(child):
+					if self.position(child) not in self.li and self.check_pos(child) and self.remove_stopwords(child):
 						self.add_name_node(child)
 						if self.check_pos(word) and self.remove_stopwords(word):
 							self.add_name_node(word)
+							flag=1
 							super(Extract_direct,self).add_edge(self.position(str(word.text)),self.position(str(child)))	
-						self.li.append(child)				
+						self.li.append(self.position(child))				
 						self.recurse(child)
-					elif child not in self.li:
-						self.li.append(child)				
+					elif self.position(child) not in self.li:
+						if flag==0:
+							prev_word=word
+							super(Extract_direct,self).add_edge(self.position(str(word.text)),self.position(str(child)))
+						self.li.append(self.position(child))				
 						self.recurse(child)
 				for ans in word.ancestors:
 					#print("Anscester is "+str(ans),str(self.li))
-					if ans not in self.li and self.check_pos(ans) and self.remove_stopwords(ans):
+					if self.position(ans) not in self.li and self.check_pos(ans) and self.remove_stopwords(ans):
 						#print("goes into"+str(ans))
 						self.add_name_node(ans)
 						if self.check_pos(word) and self.remove_stopwords(word):
 							self.add_name_node(word)
 							super(Extract_direct,self).add_edge(self.position(str(word.text)),self.position(str(ans)))	
-						self.li.append(ans)
+						self.li.append(self.position(ans))
 						self.recurse(ans)
-					elif ans not in self.li:
-						self.li.append(ans)				
+					elif self.position(ans) not in self.li:
+						self.li.append(self.position(ans))				
 						self.recurse(ans)
+
 
 	def position(self,child):
 		y=self.question.find(str(child))
