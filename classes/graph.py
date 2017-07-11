@@ -89,11 +89,11 @@ class Graph(object):
     	#for i in range(len(no)):
     	#	x,y=self.G.node["name"][i]
     	#	plt.text(x,y+0.1,s='Node word', bbox=dict(facecolor='red', alpha=0.5),horizontalalignment='center') 
-    	nx.draw_networkx(self.G, pos)
+    	nx.draw_networkx(self.G, pos,with_labels=False)
     	node_labels=nx.get_node_attributes(self.G,'name')
     	print(node_labels)
     	nx.draw_networkx_labels(self.G, pos, labels = node_labels)
     	#nx.draw_networkx_nodes(self.G,pos,node_labels)
-    	# kurs = "%i.png" % number
-    	# plt.savefig(kurs, format='png')
+    	kurs = "%i.png" % number
+    	plt.savefig(kurs, format='png')
     	plt.show()

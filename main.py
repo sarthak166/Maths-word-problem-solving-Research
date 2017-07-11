@@ -46,35 +46,39 @@ if __name__=="__main__":
 	"Joe has 3 friends who all have 5 toy cars, and then 2 friends who only have 2 cars. How many cars do Joe's friends have?",
 	"Carol went to the store 4 times last month. She buys 63 eggs each time she goes to the store. How many eggs did Carol buy last month?",
 	"Eric starts with 8 cards. He gives 4 to Amanda. How many cards does Eric end with?",
-	"Angela removes 80 blocks from a jar. There were originally 83 blocks and 8 pencils in the jar. How many blocks are left in the jar?"
+	"Angela removes 80 blocks from a jar. There were originally 83 blocks and 8 pencils in the jar. How many blocks are left in the jar?",
+	"Sara 's high school played 12 basketball games this year . The team won most of their games . They were defeated during 4 games . How many games did they win ?",
+	"Ralph collects 8 blocks. Ralph's father gives Ralph 5 more. Paul has 18 pencils. How many blocks does Ralph have?",
+	"Atomic fireballs come in packages of 5. Andrea ate 20 Atomic Fireballs. How many whole boxes did she eat and how many Atomic Fireballs does she have left?",
+	"Annie made a necklace with white and pink beads. She used 30 white beads and 15 more pink beads than white beads. How many pink beads did she use to make the necklace?"
 	]
 
-	# for i in range(len(li)):
-	# 	final_q=li[i]
-	# 	print(final_q)
-	# 	parse=Parser(final_q)
-	# 	dep=parse.dependency_parsing(final_q)
-	# 	parse.pos_tag()
-	# 	g=Extract_direct(final_q,dep)
-	# 	tok_ques=g.sen_tok()
-	# 	g.numeric_dep()
-	# 	#g.numeric_dep()
-	# 	#g.node()
-	# 	#g.add_edges()
-		
-	# 	g.draw_node_name(i)
+	for i in range(len(li)):
+		final_q=li[i]
+		print(final_q)
+		parse=Parser(final_q)
+		dep=parse.dependency_parsing(final_q)
+		parse.pos_tag()
+		g=Extract_direct(final_q,dep)
+		tok_ques=g.sen_tok()
+		g.numeric_dep()
+		#g.numeric_dep()
+		#g.node()
+		#g.add_edges()
+
+		g.draw_node_name(i)
 
 
-	final_q=li[0]
-	print(final_q)
-	parse=Parser(final_q)
-	dep=parse.dependency_parsing(final_q)
-	parse.pos_tag()
-	g=Extract_direct(final_q,dep)
-	tok_ques=g.sen_tok()
-	g.numeric_dep()
+	#final_q=li[0]
+	#print(final_q)
+	#parse=Parser(final_q)
+	#dep=parse.dependency_parsing(final_q)
+	#parse.pos_tag()
+	#g=Extract_direct(final_q,dep)
+	#tok_ques=g.sen_tok()
 	#g.numeric_dep()
-	#g.node()
-	#g.add_edges()
-	
-	g.draw_node_name(1)
+	##g.numeric_dep()
+	##g.node()
+	##g.add_edges()
+	#
+	#g.draw_node_name(1)
