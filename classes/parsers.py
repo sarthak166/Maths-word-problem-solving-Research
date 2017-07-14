@@ -40,5 +40,7 @@ class Parser():
 		#for word in doc:
 			#print(word.text,word.tag_)
 
-	#def co_ref(self):
-		
+	def read(self,name):
+		train = pd.read_csv(name, error_bad_lines=False, header=0)
+		return train
+	

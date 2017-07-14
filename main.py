@@ -3,6 +3,8 @@ from classes.parsers import Parser
 from classes.extract import Extract_direct
 import pandas as pd
 import classes
+from classes.indirect_rules import Indirect_rules
+
 '''
 imports for function final_list
 '''
@@ -53,32 +55,34 @@ if __name__=="__main__":
 	"Annie made a necklace with white and pink beads. She used 30 white beads and 15 more pink beads than white beads. How many pink beads did she use to make the necklace?"
 	]
 
-	for i in range(len(li)):
-		final_q=li[i]
-		print(final_q)
-		parse=Parser(final_q)
-		dep=parse.dependency_parsing(final_q)
-		parse.pos_tag()
-		g=Extract_direct(final_q,dep)
-		tok_ques=g.sen_tok()
-		g.numeric_dep()
-		#g.numeric_dep()
-		#g.node()
-		#g.add_edges()
+	# for i in range(len(li)):
+	# 	final_q=li[i]
+	# 	print(final_q)
+	# 	parse=Parser(final_q)
+	# 	dep=parse.dependency_parsing(final_q)
+	# 	parse.pos_tag()
+	# 	g=Extract_direct(final_q,dep)
+	# 	tok_ques=g.sen_tok()
+	# 	g.numeric_dep()
+	# 	#g.numeric_dep()
+	# 	#g.node()
+	# 	#g.add_edges()
 
-		g.draw_node_name(i)
+	# 	g.draw_node_name(i)
 
 
-	#final_q=li[0]
-	#print(final_q)
-	#parse=Parser(final_q)
-	#dep=parse.dependency_parsing(final_q)
-	#parse.pos_tag()
-	#g=Extract_direct(final_q,dep)
-	#tok_ques=g.sen_tok()
+	final_q=li[0]
+	print(final_q)
+	parse=Parser(final_q)
+	indi=Indirect_rules(parse,final_q)
+	dep=parse.dependency_parsing(final_q)
+	parse.pos_tag()
+	g=Extract_direct(final_q,dep)
+	tok_ques=g.sen_tok()
+	g.numeric_dep()
+	indi.word_quantifier()
 	#g.numeric_dep()
-	##g.numeric_dep()
-	##g.node()
-	##g.add_edges()
-	#
+	#g.node()
+	#g.add_edges()
+	
 	#g.draw_node_name(1)
