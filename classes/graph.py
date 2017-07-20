@@ -41,59 +41,60 @@ class Graph(object):
     	plt.draw()
     	plt.show()
     	
-    def draw_node_name(self,number):
-    	pos = nx.spring_layout(self.G)
-    	#nx.draw_networkx(self.G,with_labels=True)
-    	#for n,d in self.G.nodes_iter(data=True):
-    	#	print(n,d)
-    	#for node, position in pos.items():
-    	#	print("Printing pos "+str(node),str(position))
-    	#	for n,d in self.G.nodes_iter(data=True):
-    	#		if node == n:
-    	#			x,y=pos[node]
-    	#			print(x,y,d)
-    	#			plt.text(x,y,d, bbox=dict(facecolor='red', alpha=0.1),horizontalalignment='center')
-    		
-        	
+    def draw_node_name(self,number,question):
+        print("okay")
+        pos=nx.spring_layout(self.G)
+        print("stop messing")
+        fig = plt.figure()
+        fig.suptitle(question, fontsize=6, fontweight='bold')
+        ax = fig.add_subplot(111)
+        fig.subplots_adjust(top=0.85)
+        nx.draw_networkx(self.G, pos,with_labels=False)
+        node_labels=nx.get_node_attributes(self.G,'name')
+        print(node_labels)
+        nx.draw_networkx_labels(self.G, pos, labels = node_labels)
+        #nx.draw_networkx_nodes(self.G,pos,node_labels)
+        kurs = "%i.png" % number
+        plt.savefig(kurs, format='png')
+        plt.show()
+        
 
-    	#print(pos['node'])
-    	#nx.draw_networkx(self.G,with_labels=True)
-    	#for n,d in self.G.nodes_iter(data=True):
-    	#	print(n,d)
-    	#	x,y=pos[n]
-    	#	print(x,y)
-    	#	plt.text(x,y,d, bbox=dict(facecolor='red', alpha=0.1),horizontalalignment='center')
-    		 	
+        #nx.draw_networkx(self.G,with_labels=True)
+        #for n,d in self.G.nodes_iter(data=True):
+        #   print(n,d)
+        #for node, position in pos.items():
+        #   print("Printing pos "+str(node),str(position))
+        #   for n,d in self.G.nodes_iter(data=True):
+        #       if node == n:
+        #           x,y=pos[node]
+        #           print(x,y,d)
+        #           plt.text(x,y,d, bbox=dict(facecolor='red', alpha=0.1),horizontalalignment='center')
+            
+            
 
-    	#for i in range(pos):
-    	#	for n,d in self.G.nodes_iter(data=True):
-    	#		if (n==i):
+        #print(pos['node'])
+        #nx.draw_networkx(self.G,with_labels=True)
+        #for n,d in self.G.nodes_iter(data=True):
+        #   print(n,d)
+        #   x,y=pos[n]
+        #   print(x,y)
+        #   plt.text(x,y,d, bbox=dict(facecolor='red', alpha=0.1),horizontalalignment='center')
+                
 
-
-
-
-
-
-
-    	#name=nx.get_node_attributes(self.G,'name')
-    	#for i in self.G.nodes_iter(data=True):
-    	#	x,y=pos[i]
-    	#	if i in name:    			
-    	#		print("Printing name"+str(name[i]))
-    	#		s=name[i]
-    	#		plt.text(x,y,s, bbox=dict(facecolor='red', alpha=0.5),horizontalalignment='center') 	
-    	#	else:
-    	#		pass
-    	#no=self.G.nodes()
-    	#color=nx.get_node_attributes(self.G,'name')
-    	#for i in range(len(no)):
-    	#	x,y=self.G.node["name"][i]
-    	#	plt.text(x,y+0.1,s='Node word', bbox=dict(facecolor='red', alpha=0.5),horizontalalignment='center') 
-    	nx.draw_networkx(self.G, pos,with_labels=False)
-    	node_labels=nx.get_node_attributes(self.G,'name')
-    	print(node_labels)
-    	nx.draw_networkx_labels(self.G, pos, labels = node_labels)
-    	#nx.draw_networkx_nodes(self.G,pos,node_labels)
-    	kurs = "%i.png" % number
-    	plt.savefig(kurs, format='png')
-    	plt.show()
+        #for i in range(pos):
+        #   for n,d in self.G.nodes_iter(data=True):
+        #       if (n==i):
+        #name=nx.get_node_attributes(self.G,'name')
+        #for i in self.G.nodes_iter(data=True):
+        #   x,y=pos[i]
+        #   if i in name:               
+        #       print("Printing name"+str(name[i]))
+        #       s=name[i]
+        #       plt.text(x,y,s, bbox=dict(facecolor='red', alpha=0.5),horizontalalignment='center')     
+        #   else:
+        #       pass
+        #no=self.G.nodes()
+        #color=nx.get_node_attributes(self.G,'name')
+        #for i in range(len(no)):
+        #   x,y=self.G.node["name"][i]
+        #   plt.text(x,y+0.1,s='Node word', bbox=dict(facecolor='red', alpha=0.5),horizontalalignment='center')   

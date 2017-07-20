@@ -1,15 +1,16 @@
 '''Pre processing of the question
 
 '''
-class preprocessing(parsers.Parser):
+from classes import *
+
+class Preprocessing(parsers.Parser):
 	def __init__(self,question):
 		self.question=question
 		self.word_dic={}
 		self.num_dic={}
+		super(Preprocessing, self).__init__(question)
 		self.question=question
-		self.parse=parse
 		self.node_list=[]
-		super(Extract_direct, self).__init__()
 		self.quantity=0
 		self.word_dic={}
 		self.li=[]
@@ -127,5 +128,21 @@ class preprocessing(parsers.Parser):
 			if(word.dep_=="nummod"):
 				#print(word.text,word.head.text)
 				super(Extract_direct,self).add_att()
-		
+	
+	def sen_tok(self):
+		sent_tokenize_list = sent_tokenize(self.question)
+		return sent_tokenize_list
 
+	def chunck_question(self):
+		'''Takes out question part from the whole question
+		'''
+		list_q=self.sen_tok()
+		question_word=["How","When","What","Find","Calculate"]
+		for i in range(len(list_q)):
+			for j in range(len(question_word)):
+				print(list_q[i],question_word[j])
+				if question_word[j] in list_q[i]:
+					del list_q[i]
+					break
+		final_q=' '.join(list_q)
+		return final_q

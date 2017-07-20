@@ -4,10 +4,15 @@ from classes.extract import Extract_direct
 import pandas as pd
 import classes
 from classes.indirect_rules import Indirect_rules
+from classes.preprocessing import Preprocessing
 
 '''
 imports for function final_list
 '''
+from stanfordcorenlp import StanfordCoreNLP
+
+local_corenlp_path = r'/home/puru/Documents/d/arithmetic/code/api/libs/stanford-corenlp-full-2017-06-09'
+nlp = StanfordCoreNLP(local_corenlp_path)
 
 def final_list(initlist):
 	'''
@@ -44,6 +49,7 @@ if __name__=="__main__":
 	question="There are 43 rulers in the drawrer. Benny took 27 rulers from the drawrer. How many rulers are now in the drawrer?"
 	question2="Gwen was organizing her book case making sure each of the shelves had exactly 9 books on it. She has 2 types of books - mystery books and picture books. If she had 3 shelves of mystery books and 5 shelves of picture books,how many books did she have total?"
 	li=['Mommy bought 4 egg cartons, and each had 6 eggs.  2 of the eggs were bad. How many good eggs did Mommy get?',
+	"Atomic fireballs come in packages of 5. Andrea ate 20 Atomic Fireballs. How many whole boxes did she eat and how many Atomic Fireballs does she have left?",
 	"Johnson's ordered 4 pizzas, sliced into 4 pieces each. This time the dog ate 1 piece. How many pieces did the people eat?",
 	"Joe has 3 friends who all have 5 toy cars, and then 2 friends who only have 2 cars. How many cars do Joe's friends have?",
 	"Carol went to the store 4 times last month. She buys 63 eggs each time she goes to the store. How many eggs did Carol buy last month?",
@@ -51,38 +57,50 @@ if __name__=="__main__":
 	"Angela removes 80 blocks from a jar. There were originally 83 blocks and 8 pencils in the jar. How many blocks are left in the jar?",
 	"Sara 's high school played 12 basketball games this year . The team won most of their games . They were defeated during 4 games . How many games did they win ?",
 	"Ralph collects 8 blocks. Ralph's father gives Ralph 5 more. Paul has 18 pencils. How many blocks does Ralph have?",
-	"Atomic fireballs come in packages of 5. Andrea ate 20 Atomic Fireballs. How many whole boxes did she eat and how many Atomic Fireballs does she have left?",
 	"Annie made a necklace with white and pink beads. She used 30 white beads and 15 more pink beads than white beads. How many pink beads did she use to make the necklace?"
 	]
 
-	# for i in range(len(li)):
-	# 	final_q=li[i]
-	# 	print(final_q)
-	# 	parse=Parser(final_q)
-	# 	dep=parse.dependency_parsing(final_q)
-	# 	parse.pos_tag()
-	# 	g=Extract_direct(final_q,dep)
-	# 	tok_ques=g.sen_tok()
-	# 	g.numeric_dep()
-	# 	#g.numeric_dep()
-	# 	#g.node()
-	# 	#g.add_edges()
+	#for i in range(len(li)):
+	#	position,cluster_no,text=nlp.dcorf(li[i])
+	#	print(li[i])
+	#	for i in range(len(position)):
+	#		print(position[i],cluster_no[i],text[i])
 
-	# 	g.draw_node_name(i)
+	 	#final_q=li[i]
+	 	#print(final_q)
+	 	#parse=Parser(final_q)
+	 	#pre=Preprocessing(final_q)
+	 	#question_removed=pre.chunck_question()
+	 	#dep=parse.dependency_parsing(question_removed)
+	 	#parse.pos_tag()
+	 	#g=Extract_direct(question_removed,dep)
+	 	#g.word_quantifier()
+	 	#tok_ques=g.sen_tok()
+	 	#g.numeric_dep()
+	 	##g.numeric_dep()
+	 	##g.node()
+	 	##g.add_edges()
+		#g.draw_node_name(i,final_q)
 
-
-	final_q=li[0]
+	final_q=li[1]
 	print(final_q)
+	position,cluster_no,text=nlp.dcorf(final_q)
+	for i in range(len(position)):
+		print(position[i],cluster_no[i],text[i])
 	parse=Parser(final_q)
-	indi=Indirect_rules(parse,final_q)
-	dep=parse.dependency_parsing(final_q)
+	pre=Preprocessing(final_q)
+	# Removing the question part
+	question_removed=pre.chunck_question()
+	#dependency parsing of the question
+	dep=parse.dependency_parsing(question_removed)
+	#find pos tags
 	parse.pos_tag()
-	g=Extract_direct(final_q,dep)
+	g=Extract_direct(question_removed,dep)
+	g.coref_resolu(cluster_no,text)
+	g.word_quantifier()
 	tok_ques=g.sen_tok()
 	g.numeric_dep()
-	indi.word_quantifier()
 	#g.numeric_dep()
 	#g.node()
 	#g.add_edges()
-	
-	#g.draw_node_name(1)
+	g.draw_node_name(1)
